@@ -149,9 +149,10 @@ app.get('/', (req, res) => {
   });
 });
 
-// Start server
-app.listen(PORT, () => {
+// Start server - IMPORTANT: Bind to 0.0.0.0 for Railway
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`🚀 Server running on port ${PORT}`);
+  console.log(`🌍 Server accessible on 0.0.0.0:${PORT}`);
   console.log(`📡 Listening for PumpFun tokens...`);
 });
 
@@ -162,4 +163,13 @@ process.on('SIGTERM', () => {
     wsConnection.close();
   }
   process.exit(0);
+});
+
+// Handle uncaught errors
+process.on('uncaughtException', (error) => {
+  console.error('❌ Uncaught Exception:', error);
+});
+
+process.on('unhandledRejection', (error) => {
+  console.error('❌ Unhandled Rejection:', error);
 });
